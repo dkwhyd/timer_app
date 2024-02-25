@@ -11,6 +11,6 @@
 
 1. Android:
    - flutter build apk
-   - lutter build apk --analyze-size --target-platform=android-arm64
+   - flutter build apk --analyze-size --target-platform=android-arm64
 2. Ios
    - flutter build aar
