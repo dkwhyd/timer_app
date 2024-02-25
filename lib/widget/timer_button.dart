@@ -6,8 +6,8 @@ class TimerButton extends StatelessWidget {
   final double size;
   final VoidCallback onPressed;
 
-  TimerButton(
-      {required this.color,
+  const TimerButton(
+      {super.key, required this.color,
       required this.text,
       required this.size,
       required this.onPressed});
@@ -15,13 +15,13 @@ class TimerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      child: Text(
-        text,
-        style: TextStyle(color: Colors.white),
-      ),
       onPressed: onPressed,
       color: color,
       minWidth: size,
+      child: Text(
+        text,
+        style: const TextStyle(color: Colors.white),
+      ),
     );
   }
 
