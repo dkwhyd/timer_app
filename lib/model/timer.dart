@@ -13,6 +13,7 @@ class CountDownTimer {
   int work = 30;
   int shortBreak = 1;
   int longBreak = 20;
+  int? _saveTime;
 
   String returnTime(Duration t) {
     String minutes =
@@ -26,21 +27,23 @@ class CountDownTimer {
   }
 
   Stream<TimerModel> stream() async* {
-    yield* Stream.periodic(Duration(seconds: 1), (int a) {
+    yield* Stream.periodic(const Duration(seconds: 1), (int a) {
       String time;
       if (isActive) {
-        _time = (_time! - Duration(seconds: 1));
+        _time = (_time! - const Duration(seconds: 1));
         _radius = _time!.inSeconds / _fullTime!.inSeconds;
+        // if timer got 0 second
         if (_time!.inSeconds <= 0) {
           _radius = 1;
-          Duration(minutes: work);
+          _time = Duration(minutes: _saveTime!);
           isActive = false;
         }
       }
       time = returnTime(_time!);
+
       waktu = time;
       percent = _radius;
-
+      print(isActive);
       return TimerModel(time, _radius);
     });
   }
@@ -48,12 +51,12 @@ class CountDownTimer {
   void startWork() {
     _radius = 1;
     _time = Duration(minutes: work, seconds: 0);
+    _saveTime = work;
     _fullTime = _time;
   }
 
   void stopTimer() {
     isActive = false;
-    print('stop time');
   }
 
   void resumeTimer() {
@@ -62,13 +65,14 @@ class CountDownTimer {
 
   void startTimer() {
     if (_time!.inSeconds > 0) {
-      this.isActive = true;
+      isActive = true;
     }
   }
 
   void startBreak(bool isShort) {
     _radius = 1;
     _time = Duration(minutes: (isShort) ? shortBreak : longBreak, seconds: 0);
+    _saveTime = isShort ? shortBreak : longBreak;
     _fullTime = _time;
   }
 }
