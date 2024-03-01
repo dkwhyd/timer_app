@@ -16,11 +16,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final double defaultPadding = 5.0;
   final CountDownTimer timer = CountDownTimer();
+  String buttonResume = 'Resume';
 
   @override
   Widget build(BuildContext context) {
     timer.startWork();
-    print(timer.isActive);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -97,16 +97,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                     (timer.waktu == null)
                                         ? "00:00"
                                         : timer.waktu.toString(),
-                                    style: TextStyle(fontSize: 30),
+                                    style: const TextStyle(fontSize: 30),
                                   ),
                                   ElevatedButton(
-                                      onPressed: () {}, child: Text('Settings'))
+                                      onPressed: () {},
+                                      child: const Text('Settings'))
                                 ],
                               ),
                             ),
                           ],
                         ),
-                        progressColor: Color(0xff009688),
+                        progressColor: const Color(0xff009688),
                       );
                     },
                   ),
@@ -118,8 +119,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Expanded(
                       child: TimerButton(
-                        color: Color(0xff212121),
-                        text: 'Stop',
+                        color: const Color(0xff212121),
+                        text: "Stop",
                         onPressed: () => timer.stopTimer(),
                         size: 15,
                       ),
@@ -129,9 +130,24 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Expanded(
                         child: TimerButton(
-                      color: Color(0xff009688),
-                      text: 'Resume',
-                      onPressed: () => timer.resumeTimer(),
+                      color: const Color(0xff009688),
+                      text: buttonResume,
+                      onPressed: () => {
+                        if (timer.isActive)
+                          {
+                            timer.startTimer(),
+                            setState(() {
+                              buttonResume = 'Restart';
+                            })
+                          }
+                        else if (!timer.isActive)
+                          {
+                            timer.resumeTimer(),
+                            setState(() {
+                              buttonResume = "Start";
+                            })
+                          }
+                      },
                       size: 15,
                     )),
                     Padding(
@@ -149,6 +165,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
-  void emptyMethod() {}
 }
