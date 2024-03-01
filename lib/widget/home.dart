@@ -21,6 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     timer.startWork();
+    print(buttonResume);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -131,22 +132,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     Expanded(
                         child: TimerButton(
                       color: const Color(0xff009688),
-                      text: buttonResume,
+                      text: "Resume",
                       onPressed: () => {
-                        if (timer.isActive)
-                          {
-                            timer.startTimer(),
-                            setState(() {
-                              buttonResume = 'Restart';
-                            })
-                          }
-                        else if (!timer.isActive)
-                          {
-                            timer.resumeTimer(),
-                            setState(() {
-                              buttonResume = "Start";
-                            })
-                          }
+                        if (!timer.isActive) {timer.resumeTimer()}
                       },
                       size: 15,
                     )),
