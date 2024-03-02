@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timer/model/timer.dart';
 import 'package:timer/model/timermodel.dart';
+import 'package:timer/widget/settings_screen.dart';
 import 'package:timer/widget/timer_button.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -24,7 +25,6 @@ class _MyHomePageState extends State<MyHomePage> {
     menuItems.add(const PopupMenuItem(
       value: 'Settings',
       child: Text('Settings'),
-      
     ));
 
     timer.startWork();
@@ -38,9 +38,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         actions: [
-          PopupMenuButton(itemBuilder: (BuildContext context) {
-            return menuItems.toList();
-          })
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) {
+              return menuItems.toList();
+            },
+            onSelected: (s) => {
+              if (s == 'Settings') {gotoSettings(context)}
+            },
+          ),
         ],
       ),
       body: LayoutBuilder(
@@ -112,7 +117,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     style: const TextStyle(fontSize: 30),
                                   ),
                                   ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: ()=>{gotoSettings(context)},
+                                      
                                       child: const Text('Settings'))
                                 ],
                               ),
@@ -163,5 +169,10 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     );
+  }
+
+  void gotoSettings(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SettingsScreen()));
   }
 }
