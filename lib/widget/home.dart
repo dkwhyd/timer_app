@@ -20,17 +20,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final List<PopupMenuItem<String>> menuItems = [];
+    menuItems.add(const PopupMenuItem(
+      value: 'Settings',
+      child: Text('Settings'),
+      
+    ));
+
     timer.startWork();
-    print(buttonResume);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.green,
         title: Center(
           child: Text(
             widget.title,
             style: const TextStyle(color: Colors.white),
           ),
         ),
+        actions: [
+          PopupMenuButton(itemBuilder: (BuildContext context) {
+            return menuItems.toList();
+          })
+        ],
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
