@@ -42,7 +42,7 @@ class CountDownTimer {
           isActive = false;
 
           // Trigger vibration
-          Vibration.vibrate(duration: 500);
+          Vibration.vibrate(duration: 1000);
         }
       }
       time = returnTime(_time!);
