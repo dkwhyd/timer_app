@@ -1,4 +1,6 @@
 import 'dart:async';
+// import 'package:flutter/services.dart';
+import 'package:vibration/vibration.dart';
 
 import './timermodel.dart';
 
@@ -11,7 +13,7 @@ class CountDownTimer {
   Duration? _time;
   Duration? _fullTime;
   int work = 30;
-  int shortBreak = 1;
+  int shortBreak = 5;
   int longBreak = 20;
   int? _saveTime;
 
@@ -32,18 +34,21 @@ class CountDownTimer {
       if (isActive) {
         _time = (_time! - const Duration(seconds: 1));
         _radius = _time!.inSeconds / _fullTime!.inSeconds;
-        // if timer got 0 second
+
+        // If timer reaches 0 seconds
         if (_time!.inSeconds <= 0) {
           _radius = 1;
           _time = Duration(minutes: _saveTime!);
           isActive = false;
+
+          // Trigger vibration
+          Vibration.vibrate(duration: 500);
         }
       }
       time = returnTime(_time!);
 
       waktu = time;
       percent = _radius;
-      print(isActive);
       return TimerModel(time, _radius);
     });
   }
