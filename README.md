@@ -14,3 +14,10 @@
    - flutter build apk --analyze-size --target-platform=android-arm64
 2. Ios
    - flutter build aar
+  
+## Feature
+- V1.0.0 :
+  - work timer
+  - short break
+  - long break
+  - vibration
