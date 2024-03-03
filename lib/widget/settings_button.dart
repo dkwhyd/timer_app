@@ -13,7 +13,7 @@ class SettingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      onPressed: () => callback(this.setting, this.value),
+      onPressed: () => callback(setting, value),
       color: color,
       minWidth: size,
       child: Text(
