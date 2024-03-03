@@ -1,5 +1,6 @@
 import 'dart:async';
 // import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 
 import './timermodel.dart';
@@ -53,7 +54,17 @@ class CountDownTimer {
     });
   }
 
-  void startWork() {
+  Future readSettings() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    work = (prefs.getInt('workTime') ?? 30);
+    shortBreak =
+        prefs.getInt('shortBreak') == null ? 30 : prefs.getInt('shortBreak')!;
+    longBreak =
+        prefs.getInt('longBreak') == null ? 30 : prefs.getInt('longBreak')!;
+  }
+
+  void startWork() async {
+    await readSettings();
     _radius = 1;
     _time = Duration(minutes: work, seconds: 0);
     _saveTime = work;
