@@ -173,6 +173,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void gotoSettings(BuildContext context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SettingsScreen()));
+        context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
   }
 }
