@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'dart:async';
+import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import './timermodel.dart';
 
@@ -43,7 +47,8 @@ class CountDownTimer {
           isActive = false;
 
           // Trigger vibration
-          Vibration.vibrate(duration: 1000);
+          // Vibration.vibrate(duration: 1000);
+          startVibrationAndToast();
         }
       }
       time = returnTime(_time!);
@@ -82,6 +87,19 @@ class CountDownTimer {
   void startTimer() {
     if (_time!.inSeconds > 0) {
       isActive = true;
+    }
+  }
+
+  void startVibrationAndToast() {
+    if (Platform.isAndroid || Platform.isIOS) {
+      Vibration.vibrate(duration: 1000);
+      Fluttertoast.showToast(
+        msg: "Time's up",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
     }
   }
 
