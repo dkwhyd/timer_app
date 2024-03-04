@@ -103,7 +103,8 @@ class CountDownTimer {
     }
   }
 
-  void startBreak(bool isShort) {
+  void startBreak(bool isShort) async {
+    await readSettings();
     _radius = 1;
     _time = Duration(minutes: (isShort) ? shortBreak : longBreak, seconds: 0);
     _saveTime = isShort ? shortBreak : longBreak;
