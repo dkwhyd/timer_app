@@ -1,9 +1,11 @@
 // ignore_for_file: constant_identifier_names
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:timer/widget/settings_button.dart';
+import 'package:vibration/vibration.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -123,7 +125,16 @@ class _SettingState extends State<Settings> {
           1,
           setting: "LONGBREAK",
           callback: updateSetting,
-        )
+        ),
+        Text(
+          "Vibrate test",
+          style: textStyle,
+        ),
+        const Text(""),
+        ElevatedButton(
+          onPressed: vibrationTest,
+          child: const Text('Test'),
+        ),
       ],
     );
   }
@@ -190,6 +201,30 @@ class _SettingState extends State<Settings> {
           }
         }
         break;
+    }
+  }
+
+  void vibrationTest() {
+    if (Platform.isAndroid) {
+      print('Running on Android');
+      Vibration.vibrate(duration: 1000);
+      Fluttertoast.showToast(
+        msg: "This is a toast message",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (Platform.isIOS) {
+      print('Running on iOS');
+    } else if (Platform.isMacOS) {
+      print('Running on macOS');
+    } else if (Platform.isWindows) {
+      print('Running on Windows');
+    } else if (Platform.isLinux) {
+      print('Running on Linux');
+    } else {
+      print('Running on unknown platform');
     }
   }
 }
