@@ -21,6 +21,7 @@ class CountDownTimer {
   int shortBreak = 5;
   int longBreak = 20;
   int? _saveTime;
+  int durationVibration = 500;
 
   String returnTime(Duration t) {
     String minutes =
@@ -45,9 +46,6 @@ class CountDownTimer {
           _radius = 1;
           _time = Duration(minutes: _saveTime!);
           isActive = false;
-
-          // Trigger vibration
-          // Vibration.vibrate(duration: 1000);
           startVibrationAndToast();
         }
       }
@@ -66,6 +64,9 @@ class CountDownTimer {
         prefs.getInt('shortBreak') == null ? 30 : prefs.getInt('shortBreak')!;
     longBreak =
         prefs.getInt('longBreak') == null ? 30 : prefs.getInt('longBreak')!;
+    durationVibration = prefs.getInt('durationVibration') == null
+        ? 500
+        : prefs.getInt('durationVibration')!;
   }
 
   void startWork() async {
@@ -90,9 +91,10 @@ class CountDownTimer {
     }
   }
 
-  void startVibrationAndToast() {
+  void startVibrationAndToast() async {
+    readSettings();
     if (Platform.isAndroid || Platform.isIOS) {
-      Vibration.vibrate(duration: 1000);
+      Vibration.vibrate(duration: durationVibration);
       Fluttertoast.showToast(
         msg: "Time's up",
         toastLength: Toast.LENGTH_SHORT,
