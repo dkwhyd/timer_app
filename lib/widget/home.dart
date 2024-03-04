@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
     timer.startWork();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.black,
         title: Center(
           child: Text(
             widget.title,
@@ -117,8 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     style: const TextStyle(fontSize: 30),
                                   ),
                                   ElevatedButton(
-                                      onPressed: ()=>{gotoSettings(context)},
-                                      
+                                      onPressed: () => {gotoSettings(context)},
                                       child: const Text('Settings'))
                                 ],
                               ),
@@ -172,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void gotoSettings(BuildContext context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const SettingsScreen()));
   }
 }
