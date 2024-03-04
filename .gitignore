@@ -10,6 +10,8 @@
 .svn/
 migrate_working_dir/
 
+/AppIcons
+AppIcons.zip
 # IntelliJ related
 *.iml
 *.ipr

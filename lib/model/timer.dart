@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'dart:async';
+import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import './timermodel.dart';
 
@@ -17,6 +21,7 @@ class CountDownTimer {
   int shortBreak = 5;
   int longBreak = 20;
   int? _saveTime;
+  int durationVibration = 500;
 
   String returnTime(Duration t) {
     String minutes =
@@ -41,9 +46,7 @@ class CountDownTimer {
           _radius = 1;
           _time = Duration(minutes: _saveTime!);
           isActive = false;
-
-          // Trigger vibration
-          Vibration.vibrate(duration: 1000);
+          startVibrationAndToast();
         }
       }
       time = returnTime(_time!);
@@ -61,6 +64,9 @@ class CountDownTimer {
         prefs.getInt('shortBreak') == null ? 30 : prefs.getInt('shortBreak')!;
     longBreak =
         prefs.getInt('longBreak') == null ? 30 : prefs.getInt('longBreak')!;
+    durationVibration = prefs.getInt('durationVibration') == null
+        ? 500
+        : prefs.getInt('durationVibration')!;
   }
 
   void startWork() async {
@@ -85,7 +91,22 @@ class CountDownTimer {
     }
   }
 
-  void startBreak(bool isShort) {
+  void startVibrationAndToast() async {
+    readSettings();
+    if (Platform.isAndroid || Platform.isIOS) {
+      Vibration.vibrate(duration: durationVibration);
+      Fluttertoast.showToast(
+        msg: "Time's up",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    }
+  }
+
+  void startBreak(bool isShort) async {
+    await readSettings();
     _radius = 1;
     _time = Duration(minutes: (isShort) ? shortBreak : longBreak, seconds: 0);
     _saveTime = isShort ? shortBreak : longBreak;

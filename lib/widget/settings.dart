@@ -1,9 +1,11 @@
 // ignore_for_file: constant_identifier_names
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:timer/widget/settings_button.dart';
+import 'package:vibration/vibration.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -17,14 +19,17 @@ class _SettingState extends State<Settings> {
   TextEditingController? txtWork;
   TextEditingController? txtShort;
   TextEditingController? txtLong;
+  TextEditingController? txtDurationVibration;
 
   static const String WORKTIME = 'workTime';
   static const String SHORTBREAK = 'shortBreak';
   static const String LONGBREAK = 'longBreak';
+  static const String VIBRATION = 'durationVibration';
 
   int? workTime;
   int? shortBreak;
   int? longBreak;
+  int? vibration;
 
   SharedPreferences? prefs;
 
@@ -33,6 +38,7 @@ class _SettingState extends State<Settings> {
     txtWork = TextEditingController();
     txtShort = TextEditingController();
     txtLong = TextEditingController();
+    txtDurationVibration = TextEditingController();
     readSettings();
     super.initState();
   }
@@ -123,7 +129,57 @@ class _SettingState extends State<Settings> {
           1,
           setting: "LONGBREAK",
           callback: updateSetting,
-        )
+        ),
+        // vibration setting
+        Text(
+          "Vibration(ms)",
+          style: TextStyle(fontSize: 18),
+        ),
+        const Text(""),
+        const Text(""),
+        SettingButton(
+          const Color(0xff455A64),
+          "-",
+          buttonSize,
+          -500,
+          setting: "VIBRATION",
+          callback: updateSetting,
+        ),
+        TextField(
+            controller: txtDurationVibration,
+            style: textStyle,
+            textAlign: TextAlign.center,
+            keyboardType: TextInputType.number),
+        SettingButton(
+          const Color(0xff009688),
+          "+",
+          buttonSize,
+          500,
+          setting: "VIBRATION",
+          callback: updateSetting,
+        ),
+
+        // vibration test
+        Text(
+          "Vibrate test",
+          style: textStyle,
+        ),
+        const Text(""),
+        ElevatedButton(
+          onPressed: vibrationTest,
+          child: const Text('Test'),
+        ),
+
+        // // test toast
+        // Text(
+        //   "Toast test",
+        //   style: textStyle,
+        // ),
+        // const Text(""),
+        // ElevatedButton(
+        //   onPressed: () => _showToast(context),
+        //   child: const Text('Test'),
+        // ),
       ],
     );
   }
@@ -145,10 +201,18 @@ class _SettingState extends State<Settings> {
     if (longBreak == null) {
       await prefs!.setInt(LONGBREAK, int.parse('20'));
     }
+
+    int? durationVibration = prefs!.getInt(VIBRATION);
+    print('durasi: ${durationVibration}');
+    if (durationVibration == null) {
+      await prefs!.setInt(VIBRATION, int.parse('500'));
+    }
+
     setState(() {
       txtWork!.text = workTime!.toString();
       txtShort!.text = shortBreak!.toString();
       txtLong!.text = longBreak!.toString();
+      txtDurationVibration!.text = durationVibration!.toString();
     });
   }
 
@@ -190,6 +254,55 @@ class _SettingState extends State<Settings> {
           }
         }
         break;
+
+      case 'VIBRATION':
+        {
+          int? vibrate = prefs!.getInt(VIBRATION);
+
+          vibrate = vibrate! + value;
+
+          if (vibrate >= 500 && vibrate <= 3000) {
+            prefs?.setInt(VIBRATION, vibrate);
+            setState(() {
+              txtDurationVibration?.text = vibrate.toString();
+            });
+          }
+        }
+        break;
     }
   }
+
+  void vibrationTest() {
+    if (Platform.isAndroid) {
+      Vibration.vibrate(duration: 500);
+      Fluttertoast.showToast(
+        msg: "test vibrate",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    } else if (Platform.isIOS) {
+      print('Running on iOS');
+    } else if (Platform.isMacOS) {
+      print('Running on macOS');
+    } else if (Platform.isWindows) {
+      print('Running on Windows');
+    } else if (Platform.isLinux) {
+      print('Running on Linux');
+    } else {
+      print('Running on unknown platform');
+    }
+  }
+
+  // void _showToast(BuildContext context) {
+  //   final scaffold = ScaffoldMessenger.of(context);
+  //   scaffold.showSnackBar(
+  //     SnackBar(
+  //       content: const Text('Added to favorite'),
+  //       action: SnackBarAction(
+  //           label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+  //     ),
+  //   );
+  // }
 }
