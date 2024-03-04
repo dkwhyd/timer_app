@@ -62,9 +62,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     Padding(
                       padding: EdgeInsets.all(defaultPadding),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(defaultPadding),
-                    ),
                     Expanded(
                         child: TimerButton(
                             size: 15,
