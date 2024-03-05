@@ -21,6 +21,6 @@
   - short break
   - long break
   - vibration
--V1.0.1:
+- V1.0.1:
     - duration vibrate
     - setting timer    
