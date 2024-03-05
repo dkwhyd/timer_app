@@ -67,10 +67,18 @@ class _SettingState extends State<Settings> {
           callback: updateSetting,
         ),
         TextField(
-            controller: txtWork,
-            style: textStyle,
-            textAlign: TextAlign.center,
-            keyboardType: TextInputType.number),
+          controller: txtWork,
+          style: textStyle,
+          textAlign: TextAlign.center,
+          keyboardType: TextInputType.number,
+          onChanged: (text) {
+            setState(() {
+              workTime = int.parse(text);
+              txtWork!.text = text;
+              prefs!.setInt(WORKTIME, int.parse(text));
+            });
+          },
+        ),
         SettingButton(
           const Color(0xff009688),
           "+",
@@ -91,10 +99,18 @@ class _SettingState extends State<Settings> {
           callback: updateSetting,
         ),
         TextField(
-            controller: txtShort,
-            style: textStyle,
-            textAlign: TextAlign.center,
-            keyboardType: TextInputType.number),
+          controller: txtShort,
+          style: textStyle,
+          textAlign: TextAlign.center,
+          keyboardType: TextInputType.number,
+          onChanged: (text) {
+            setState(() {
+              shortBreak = int.parse(text);
+              txtShort!.text = text;
+              prefs!.setInt(SHORTBREAK, int.parse(text));
+            });
+          },
+        ),
         SettingButton(
           const Color(0xff009688),
           "+",
@@ -118,10 +134,18 @@ class _SettingState extends State<Settings> {
           callback: updateSetting,
         ),
         TextField(
-            controller: txtLong,
-            style: textStyle,
-            textAlign: TextAlign.center,
-            keyboardType: TextInputType.number),
+          controller: txtLong,
+          style: textStyle,
+          textAlign: TextAlign.center,
+          keyboardType: TextInputType.number,
+          onChanged: (text) {
+            setState(() {
+              longBreak = int.parse(text);
+              txtLong!.text = text;
+              prefs!.setInt(LONGBREAK, int.parse(text));
+            });
+          },
+        ),
         SettingButton(
           const Color(0xff009688),
           "+",
@@ -146,10 +170,18 @@ class _SettingState extends State<Settings> {
           callback: updateSetting,
         ),
         TextField(
-            controller: txtDurationVibration,
-            style: textStyle,
-            textAlign: TextAlign.center,
-            keyboardType: TextInputType.number),
+          controller: txtDurationVibration,
+          style: textStyle,
+          textAlign: TextAlign.center,
+          keyboardType: TextInputType.number,
+          onChanged: (text) {
+            setState(() {
+              vibration = int.parse(text);
+              txtDurationVibration!.text = text;
+              prefs!.setInt(VIBRATION, int.parse(text));
+            });
+          },
+        ),
         SettingButton(
           const Color(0xff009688),
           "+",
@@ -222,7 +254,7 @@ class _SettingState extends State<Settings> {
         {
           int? workTime = prefs?.getInt(WORKTIME);
           workTime = workTime! + value;
-          if (workTime >= 1 && workTime <= 180) {
+          if (workTime >= 1) {
             prefs?.setInt(WORKTIME, workTime);
             setState(() {
               txtWork?.text = workTime.toString();
@@ -234,7 +266,7 @@ class _SettingState extends State<Settings> {
         {
           int? short = prefs!.getInt(SHORTBREAK);
           short = short! + value;
-          if (short >= 1 && short <= 120) {
+          if (short >= 1) {
             prefs?.setInt(SHORTBREAK, short);
             setState(() {
               txtShort!.text = short.toString();
@@ -246,7 +278,7 @@ class _SettingState extends State<Settings> {
         {
           int? long = prefs!.getInt(LONGBREAK);
           long = long! + value;
-          if (long >= 1 && long <= 180) {
+          if (long >= 1) {
             prefs?.setInt(LONGBREAK, long);
             setState(() {
               txtLong?.text = long.toString();
@@ -261,7 +293,7 @@ class _SettingState extends State<Settings> {
 
           vibrate = vibrate! + value;
 
-          if (vibrate >= 500 && vibrate <= 3000) {
+          if (vibrate >= 500) {
             prefs?.setInt(VIBRATION, vibrate);
             setState(() {
               txtDurationVibration?.text = vibrate.toString();
@@ -282,26 +314,34 @@ class _SettingState extends State<Settings> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
       );
-    } else if (Platform.isIOS) {
-      print('Running on iOS');
-    } else if (Platform.isMacOS) {
-      print('Running on macOS');
-    } else if (Platform.isWindows) {
-      print('Running on Windows');
-    } else if (Platform.isLinux) {
-      print('Running on Linux');
-    } else {
-      print('Running on unknown platform');
-    }
+    } 
+    // else if (Platform.isIOS) {
+    //   print('Running on iOS');
+    // } else if (Platform.isMacOS) {
+    //   print('Running on macOS');
+    // } else if (Platform.isWindows) {
+    //   print('Running on Windows');
+    // } else if (Platform.isLinux) {
+    //   print('Running on Linux');
+    // } else {
+    //   print('Running on unknown platform');
+    // }
   }
 
   // void _showToast(BuildContext context) {
   //   final scaffold = ScaffoldMessenger.of(context);
   //   scaffold.showSnackBar(
   //     SnackBar(
-  //       content: const Text('Added to favorite'),
+  //       content: Column(
+  //         children: [
+  //           Text('Added to favorite'),
+  //           Text(
+  //             '1',
+  //           ),
+  //         ],
+  //       ),
   //       action: SnackBarAction(
-  //           label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+  //           label: 'CLOSE', onPressed: scaffold.hideCurrentSnackBar),
   //     ),
   //   );
   // }
