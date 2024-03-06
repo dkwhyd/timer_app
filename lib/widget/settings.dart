@@ -155,7 +155,7 @@ class _SettingState extends State<Settings> {
           callback: updateSetting,
         ),
         // vibration setting
-        Text(
+        const Text(
           "Vibration(ms)",
           style: TextStyle(fontSize: 18),
         ),
@@ -235,7 +235,6 @@ class _SettingState extends State<Settings> {
     }
 
     int? durationVibration = prefs!.getInt(VIBRATION);
-    print('durasi: ${durationVibration}');
     if (durationVibration == null) {
       await prefs!.setInt(VIBRATION, int.parse('500'));
     }
